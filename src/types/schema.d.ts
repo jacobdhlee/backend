@@ -37,8 +37,8 @@ createUser: boolean | null;
 interface ICreateUserOnMutationArguments {
 email: string;
 password: string;
-firstName?: string | null;
-lastName?: string | null;
+firstName: string;
+lastName: string;
 }
 }
 
