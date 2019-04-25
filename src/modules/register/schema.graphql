@@ -1,7 +1,6 @@
 type Query {
-    hello(name: String): String!
+  dummy: String
 }
-
 type Mutation {
   createUser(email: String!, password: String!, firstName: String!, lastName: String!): Boolean
 }

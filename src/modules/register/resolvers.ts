@@ -1,12 +1,11 @@
 import bcrypt from 'bcryptjs';
-import { ResolverMap } from "./types/graphql-utils";
-import { User } from './entity/User';
+import { ResolverMap } from '../../types/graphql-utils';
+import { User } from '../../entity/User';
 
 export const resolvers: ResolverMap = {
   Query: {
-    hello: (_, { name }: GQL.IHelloOnQueryArguments) => `Hello ${name || 'World'}`,
+    dummy: () => 'dummy need to fix',
   },
-
   Mutation: {
     createUser: async (_, { email, password, firstName, lastName }: GQL.ICreateUserOnMutationArguments) => {
       const hashedPassword = await bcrypt.hash(password, 12);

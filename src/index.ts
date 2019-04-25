@@ -1,12 +1,20 @@
 import "reflect-metadata";
+import { GraphQLSchema } from "graphql";
 import { createConnection } from "typeorm";
 import { GraphQLServer } from 'graphql-yoga'
 import { importSchema } from 'graphql-import';
 import * as path from 'path';
-import { resolvers } from './resolvers';
+import * as fs from 'fs';
+import { mergeSchemas, makeExecutableSchema } from 'graphql-tools';
 
-const typeDefs = importSchema(path.join(__dirname + "/schema.graphql"));
-const server = new GraphQLServer({ typeDefs, resolvers });
+const schemas: GraphQLSchema[] = [];
+const folders = fs.readdirSync(path.join(__dirname + "/modules"));
+folders.forEach((folder) => {
+    const { resolvers } = require(`./modules/${folder}/resolvers`);
+    const typeDefs = importSchema(path.join(__dirname + `/modules/${folder}/schema.graphql`));
+    schemas.push(makeExecutableSchema({ resolvers, typeDefs }))
+})
+const server = new GraphQLServer({ schema: mergeSchemas({ schemas }) });
 
 //create connection to postgresql
 createConnection().then(() => {
