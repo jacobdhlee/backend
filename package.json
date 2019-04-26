@@ -14,11 +14,13 @@
       "typescript": "3.4.5"
    },
    "dependencies": {
+      "@types/ioredis": "^4.0.10",
       "bcryptjs": "^2.4.3",
       "graphql": "^14.2.1",
       "graphql-import": "^0.7.1",
       "graphql-tools": "^4.0.4",
       "graphql-yoga": "^1.17.4",
+      "ioredis": "^4.9.0",
       "pg": "^7.10.0",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.2.16",

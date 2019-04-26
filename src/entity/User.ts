@@ -19,6 +19,9 @@ export class User extends BaseEntity {
     @Column({ type: "text" })
     lastName: string;
 
+    @Column("boolean", { default: false })
+    comfirmEmail: boolean;
+
     @BeforeInsert()
     genId() {
         this.id = uuidv4();

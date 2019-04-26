@@ -4,6 +4,7 @@ import { ResolverMap } from '../../types/graphql-utils';
 import { User } from '../../entity/User';
 import { formatError } from '../../utils/formatError';
 import { emailExistErr } from './errorMessage';
+import { confirmEmailLink } from '../../utils/confirmEmailLink';
 
 const schema = yup.object().shape({
   email: yup.string().email(),
@@ -17,7 +18,7 @@ export const resolvers: ResolverMap = {
     dummy: () => 'dummy need to fix',
   },
   Mutation: {
-    createUser: async (_, args: GQL.ICreateUserOnMutationArguments) => {
+    createUser: async (_, args: GQL.ICreateUserOnMutationArguments, { redis, url }) => {
       try {
         await schema.validate(args, { abortEarly: false });
       } catch (err) {
@@ -47,7 +48,7 @@ export const resolvers: ResolverMap = {
         lastName
       });
       await user.save();
-
+      const link = await confirmEmailLink(url, user.id, redis)
       return null;
     }
   }
