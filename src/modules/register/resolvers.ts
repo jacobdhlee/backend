@@ -1,6 +1,16 @@
 import bcrypt from 'bcryptjs';
+import * as yup from 'yup';
 import { ResolverMap } from '../../types/graphql-utils';
 import { User } from '../../entity/User';
+import { formatError } from '../../utils/formatError';
+import { emailExistErr } from './errorMessage';
+
+const schema = yup.object().shape({
+  email: yup.string().email(),
+  password: yup.string().min(7).max(200),
+  firstName: yup.string(),
+  lastName: yup.string()
+});
 
 export const resolvers: ResolverMap = {
   Query: {
@@ -8,8 +18,13 @@ export const resolvers: ResolverMap = {
   },
   Mutation: {
     createUser: async (_, args: GQL.ICreateUserOnMutationArguments) => {
-      const { email, password, firstName, lastName } = args;
+      try {
+        await schema.validate(args, { abortEarly: false });
+      } catch (err) {
+        return formatError(err);
+      }
 
+      const { email, password, firstName, lastName } = args;
       const emailExist = await User.findOne({
         where: { email },
         select: ["id"]
@@ -19,7 +34,7 @@ export const resolvers: ResolverMap = {
         return [
           {
             path: "email",
-            message: "email has already exists!!"
+            message: emailExistErr
           }
         ];
       }

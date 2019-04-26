@@ -1,0 +1,1 @@
+export const emailExistErr = "Email already in use";
