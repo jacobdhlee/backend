@@ -48,7 +48,7 @@ export const resolvers: ResolverMap = {
         lastName
       });
       await user.save();
-      const link = await confirmEmailLink(url, user.id, redis)
+      await confirmEmailLink(url, user.id, redis)
       return null;
     }
   }

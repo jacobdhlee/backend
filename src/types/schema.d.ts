@@ -22,6 +22,7 @@ column: number;
 
 interface IQuery {
 __typename: "Query";
+dummy: string | null;
 hello: string;
 }
 
@@ -31,7 +32,7 @@ name?: string | null;
 
 interface IMutation {
 __typename: "Mutation";
-createUser: boolean | null;
+createUser: Array<IError> | null;
 }
 
 interface ICreateUserOnMutationArguments {
@@ -39,6 +40,12 @@ email: string;
 password: string;
 firstName: string;
 lastName: string;
+}
+
+interface IError {
+__typename: "Error";
+path: string;
+message: string;
 }
 }
 
