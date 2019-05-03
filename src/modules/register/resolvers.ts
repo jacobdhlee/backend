@@ -5,7 +5,7 @@ import { User } from '../../entity/User';
 import { formatError } from '../../utils/formatError';
 import { emailExistErr } from './errorMessage';
 import { confirmEmailLink } from '../../utils/confirmEmailLink';
-
+import { sendMail } from '../../utils/sendEmail';
 const schema = yup.object().shape({
   email: yup.string().email(),
   password: yup.string().min(7).max(200),
@@ -48,7 +48,7 @@ export const resolvers: ResolverMap = {
         lastName
       });
       await user.save();
-      await confirmEmailLink(url, user.id, redis)
+      await sendMail(email, await confirmEmailLink(url, user.id, redis))
       return null;
     }
   }
